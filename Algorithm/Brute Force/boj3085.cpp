@@ -10,9 +10,8 @@ using namespace std;
 const int MAX = 10e+6;
 const int INF = 0x66554433;
 
-
-
-void check(char i);
+vector<string> maps;
+int n;
 
 inline void Quick_IO(){
     ios_base :: sync_with_stdio(false);
@@ -20,17 +19,40 @@ inline void Quick_IO(){
     cout.tie(nullptr);
 }
 
-void check(char c) {
-
+int check(){
+    int result = 0;
+    for (int i = 0; i < n; ++i) {
+        int temp = 1;
+        for (int j = 1; j < n; ++j) {
+            if(maps[i][j] == maps[i][j-1]) temp++;
+            else{
+                result = max(result, temp);
+                temp = 1;
+            }
+        }
+        result = max(result, temp);
+    }
+    for (int i = 0; i < n; ++i) {
+        int temp = 1;
+        for (int j = 1; j < n; ++j) {
+            if(maps[j][i] == maps[j-1][i]) temp++;
+            else{
+                result = max(result, temp);
+                temp = 1;
+            }
+        }
+        result = max(result, temp);
+    }
+    return result;
 }
 
 int main(){
     Quick_IO();
-    int n;
+
     int maxValue = 0;
     string a;
     cin>>n;
-    vector<string> maps;
+
 
     for (int i = 0; i < n; ++i) {
         cin>>a;
@@ -38,56 +60,15 @@ int main(){
     }
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n-1; ++j) {
-            // 가로 swap
-            char p = maps[i][j], q = maps[i][j+1];
-            int temp, temp1 = 0, temp2 = 0;
-            for(int k = i-1;k>=0;k++){
-                if(maps[k][j] == p) temp1++;
-                else break;
-            }
-            for(int k = i+1;k<n;k++){
-                if(maps[k][j] == p) temp1++;
-                else break;
-            }
-            for(int k = i-1;k>=0;k++){
-                if(maps[k][j+1] == q) temp2++;
-                else break;
-            }
-            for(int k = i+1;k<n;k++){
-                if(maps[k][j+1] == q) temp2++;
-                else break;
-            }
-            temp = max(temp1, temp2);
-            maxValue = max(temp, maxValue);
+            swap(maps[i][j], maps[i][j+1]);
+            maxValue = max(maxValue, check());
+            swap(maps[i][j], maps[i][j+1]);
+            swap(maps[j][i], maps[j+1][i]);
+            maxValue = max(maxValue, check());
+            swap(maps[j][i], maps[j+1][i]);
         }
     }
-    for (int j = 0; j < n; ++j) {
-        for (int i = 0; i < n-1; ++i) {
-            // 세로 swap
-            char p = maps[i][j], q = maps[i][j+1];
-            int temp, temp1 = 0, temp2 = 0;
-            for(int k = i-1;k>=0;k++){
-                if(maps[k][j] == p) temp1++;
-                else break;
-            }
-            for(int k = i+1;k<n;k++){
-                if(maps[k][j] == p) temp1++;
-                else break;
-            }
-            for(int k = i-1;k>=0;k++){
-                if(maps[k][j+1] == q) temp2++;
-                else break;
-            }
-            for(int k = i+1;k<n;k++){
-                if(maps[k][j+1] == q) temp2++;
-                else break;
-            }
-            temp = max(temp1, temp2);
-            maxValue = max(temp, maxValue);
-
-        }
-    }
-
+    cout<<maxValue<<endl;
     return 0;
 }
 
