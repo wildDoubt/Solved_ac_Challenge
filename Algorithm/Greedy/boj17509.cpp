@@ -21,10 +21,19 @@ inline void Quick_IO(){
 
 int main(){
     Quick_IO();
-    int t;
-    while(t--){
-
+    int arr[11];
+    int answer = 0;
+    int v;
+    for(int i = 0;i<11;i++){
+        cin>>arr[i];
+        cin>>v;
+        answer += v*20;
     }
-
+    sort(arr, arr+11, [](int a, int b){
+        return a<b;
+    });
+    int pD = 0;
+    for(int& x:arr) answer += pD += x;
+    cout<<answer<<endl;
     return 0;
 }

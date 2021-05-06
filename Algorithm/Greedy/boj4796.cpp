@@ -5,11 +5,9 @@
 #include <string>
 #include <functional>
 #include <set>
-#include <queue>
 
 using namespace std;
-using p = pair<int, int>;
-using ll = long long;
+
 const int MAX = 10e+6;
 const int INF = 0x66554433;
 
@@ -21,9 +19,12 @@ inline void Quick_IO(){
 
 int main(){
     Quick_IO();
-    int t;
-    while(t--){
-
+    int t = 0;
+    int L, P, V;
+    while(true){
+        cin>>L>>P>>V;
+        if(L==0&&P==0&&V==0) break;
+        cout<<"Case "<<++t<<": "<<V/P*L + min(V%P, L)<<endl;
     }
 
     return 0;
