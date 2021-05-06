@@ -13,6 +13,8 @@ using ll = long long;
 const int MAX = 10e+6;
 const int INF = 0x66554433;
 
+int arr[MAX+1];
+
 inline void Quick_IO(){
     ios_base :: sync_with_stdio(false);
     cin.tie(nullptr);
@@ -21,19 +23,20 @@ inline void Quick_IO(){
 
 int main(){
     Quick_IO();
-    int arr[11];
-    int answer = 0;
-    int v;
-    for(int & i : arr){
-        cin>>i;
-        cin>>v;
-        answer += v*20;
+    int n, k;
+    cin>>n>>k;
+    for (int i = 0; i < n; ++i) {
+        cin>>arr[n-i-1];
     }
-    sort(arr, arr+11, [](int a, int b){
-        return a<b;
-    });
-    int pD = 0;
-    for(int& x:arr) answer += pD += x;
-    cout<<answer<<endl;
+    int answer = 0;
+
+    for (int i = 0; i < n; ++i) {
+        if(k==0) break;
+        if(arr[i]>k) continue;
+        int d = k/arr[i];
+        answer += d;
+        k-=d*arr[i];
+    }
+    cout<<answer<<"\n";
     return 0;
 }
