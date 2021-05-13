@@ -14,77 +14,91 @@ using ll = long long;
 const int MAX = 10e+6;
 const int INF = 0x66554433;
 
-inline void Quick_IO(){
-    ios_base :: sync_with_stdio(false);
+inline void Quick_IO() {
+    ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
 }
-
-bool visited[21][21];
+typedef struct fish{
+    int dist;
+    int x;
+    int y;
+} fish;
 int board[21][21];
-vector<p> fish[7]; // 크기, 좌표(x, y): 해당되는 x와 y중 가장 작은 값을 선택하면 된다.
+bool visited[21][21];
+int dx[4] = {0, 1, 0, -1};
+int dy[4] = {-1, 0, 1, 0};
+struct compare{
+    bool operator()(fish a, fish b){
+        if(a.dist==b.dist){
+            if(a.x==b.x){
+                return a.y>b.y;
+            }
+            return a.x>b.x;
+        }
+        return a.dist>b.dist;
+    }
+};
 
-int getDist(int x1, int y1, int x2, int y2){
-    return abs(x1-x2) + abs(y1-y2);
-}
-
-int main(){
+int main() {
     Quick_IO();
     int N;
-    cin>>N;
+    cin >> N;
     int x, y;
-    for(int i = 0;i<N;i++){
-        for(int j = 0;j<N;j++){
-            int a;
-            cin>>a;
-            if(a==9){
-                x = i;
-                y = j;
+    queue<fish> q;
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            cin >> board[i][j];
+            if (board[i][j] == 9) {
+                q.push({0, i, j});
+                board[i][j] = 0;
+                visited[i][j] = true;
             }
-            board[i][j] = a;
         }
     }
-    visited[x][y] = true;
     int eat = 0;
     int size = 2;
-    int answer  = 0;
-    while(true){
-        vector<pair<int, p>> tempCoord;
-        for(int i = size-1;i>0;i--){
-            for(auto c:fish[i]){
-                if(!visited[c.first][c.second]){
-                    tempCoord.emplace_back(getDist(c.first, c.second, x, y), p(c.first, c.second));
+    int answer = 0;
+    while (true) {
+        priority_queue<fish, vector<fish>, compare> pq;
+        while(!q.empty()){
+            auto curr = q.front();
+            q.pop();
+            for(int i = 0;i<4;i++){
+                int nx = curr.x + dx[i];
+                int ny = curr.y + dy[i];
+                if(nx<0 || nx>=N||ny<0||ny>=N){
+                    continue;
+                }
+                if(board[nx][ny] > size || visited[nx][ny]){
+                    continue;
+                }
+                q.push({curr.dist+1, nx, ny});
+                visited[nx][ny] = true;
+                if(board[nx][ny]<size && board[nx][ny]!=0){
+                    pq.push({curr.dist+1, nx, ny});
                 }
             }
+        }
+        for(int i = 0;i<N;i++) fill(visited[i], visited[i] + N, false);
+
+        if(!pq.empty()){
+            auto cur = pq.top();
+            pq.pop();
+            eat++;
+            board[cur.x][cur.y] = 0;
+            visited[cur.x][cur.y] = true;
+            answer = cur.dist;
+            q.push({cur.dist, cur.x, cur.y});
+            if(size==eat){
+                eat = 0;
+                size++;
+            }
+        }else{
+            break;
         }
 
-        if(tempCoord.empty()){
-            break;
-        }else{
-            sort(tempCoord.begin(), tempCoord.end(), [](pair<int, p> a, pair<int, p> b){
-                if(a.first == b.first){
-                    if(a.second.first==b.second.first){
-                        return a.second.second<b.second.second;
-                    }else{
-                        return a.second.first<b.second.first;
-                    }
-                }else{
-                    return a.first<b.first;
-                }
-            });
-            x = tempCoord[0].second.first;
-            y = tempCoord[0].second.second;
-            cout<<"Eat fish: "<<"("<<x<<", "<<y<<")";
-            visited[x][y] = true;
-            answer += tempCoord[0].first;
-            eat++;
-            if(size<6&&eat==size){
-                size++;
-                eat = 0;
-            }
-            cout<<" curr size: "<<size<<" answer: "<<answer<<endl;
-        }
     }
-    cout<<answer<<"\n";
+    cout << answer << "\n";
     return 0;
 }
