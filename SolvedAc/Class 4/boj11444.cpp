@@ -1,3 +1,7 @@
+// 행렬 곱 구현 참고
+// https://docs.microsoft.com/en-us/cpp/parallel/amp/walkthrough-matrix-multiplication?view=msvc-160
+
+
 #include <iostream>
 #include <algorithm>
 #include <vector>
