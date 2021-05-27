@@ -10,3 +10,5 @@
 [Class 4](SolvedAc/Class%204)
 
 [Class 5](SolvedAc/Class%205)
+
+[Class 6](SolvedAc/Class%206)
