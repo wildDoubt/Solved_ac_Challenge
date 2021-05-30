@@ -1,3 +1,5 @@
+// Brute force
+
 #include <iostream>
 #include <string>
 #include <algorithm>
