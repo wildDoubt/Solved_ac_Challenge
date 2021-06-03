@@ -3,30 +3,11 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <cmath>
-#include <string>
-#include <functional>
-#include <set>
-#include <queue>
 #include <sstream>
 
 using namespace std;
 using p = pair<int, int>;
 using ll = long long;
-const int MAX = 10e+6;
-const int INF = 0x66554433;
-
-vector<string> split(string input, char delimiter) {
-    vector<string> answer;
-    stringstream ss(input);
-    string temp;
-
-    while (getline(ss, temp, delimiter)) {
-        answer.push_back(temp);
-    }
-
-    return answer;
-}
 
 inline void Quick_IO(){
     ios_base :: sync_with_stdio(false);
@@ -35,6 +16,7 @@ inline void Quick_IO(){
 }
 
 int parent[2001];
+int ranks[2001];
 
 int find(int a){
     if(parent[a]==a) return a;
@@ -46,10 +28,16 @@ int find(int a){
 void _union(int a, int b){
     int x = find(a);
     int y = find(b);
-    if(x==y){
-        return;
+
+    if(x==y) return;
+
+    if(ranks[x]>ranks[y]) {
+        swap(x, y);
     }
-    parent[y] = x;
+    parent[x] = y;
+    if(ranks[x]==ranks[y]) {
+        ranks[y]++;
+    }
 }
 
 int calc(int x1, int y1, int x2, int y2){
@@ -63,6 +51,7 @@ int main(){
     for (int i = 0; i < 2001; ++i) {
         parent[i] = i;
     }
+
     int N, C;
     cin>>N>>C;
     vector<p> pos(N);
