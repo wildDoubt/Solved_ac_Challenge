@@ -1,5 +1,7 @@
 /CMakeLists.txt
 /cmake-build-debug/
 /.idea
-*.txt
+
+*_input.txt
+*_output.txt
 *.out
