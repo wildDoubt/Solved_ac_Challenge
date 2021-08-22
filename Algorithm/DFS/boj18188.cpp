@@ -7,24 +7,17 @@ using namespace std;
 using p = pair<int, int>;
 using node = pair<p, string>;
 
-inline void Quick_IO() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-}
-
 string board[25];
-// WASD
+
 bool moves[25][4];
 int dx[4] = {-1, 0, 1, 0};
 int dy[4] = {0, -1, 0, 1};
 int dao_x, dao_y;
 int dizini_x, dizini_y;
-string path;
 
 int main() {
-    Quick_IO();
-
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(nullptr); std::cout.tie(nullptr);
     const string temp = "WASD";
 
     int H, W, N;
@@ -54,18 +47,17 @@ int main() {
     int level = 0;
     while (!q.empty()) {
         int size = (int) q.size();
-        bool flag = false;
-        if (level > N) {
-            break;
-        }
+
+        if (level > N) break;
+
         for (int i = 0; i < size; ++i) {
             int currX = q.front().first.first;
             int currY = q.front().first.second;
             string currPath = q.front().second;
             if (currX == dizini_x && currY == dizini_y) {
-                path = currPath;
-                flag = true;
-                break;
+                cout<<"YES\n";
+                cout<<currPath<<'\n';
+                return 0;
             }
             q.pop();
             for (int j = 0; j < 4; ++j) {
@@ -79,9 +71,8 @@ int main() {
                 }
             }
         }
-        if (flag) break;
         level++;
     }
-    path.empty() ? cout << "NO\n" : cout << "YES\n" << path << '\n';
+    cout<<"NO\n";
     return 0;
 }
