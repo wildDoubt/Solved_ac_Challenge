@@ -25,14 +25,15 @@ int main() {
         auto[s, e] = arr[i];
 
         int startIndex = max(currIndex, s);
-        int count = e - startIndex;
-        if(count<=0) continue;
-        int currCount = count / L;
-        if (count % L != 0) {
-            ++currCount;
+        int holeLength = e - startIndex;
+        if(holeLength <= 0) continue;
+
+        int woodCount = holeLength / L;
+        if (holeLength % L != 0) {
+            ++woodCount;
         }
-        answer += currCount;
-        currIndex = startIndex + currCount * L;
+        answer += woodCount;
+        currIndex = startIndex + woodCount * L;
     }
     cout << answer << '\n';
 
