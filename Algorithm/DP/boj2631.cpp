@@ -1,45 +1,32 @@
 #include <iostream>
 #include <algorithm>
-#include <vector>
-#include <cmath>
-#include <string>
-#include <functional>
-#include <set>
-#include <queue>
-#include <sstream>
 
 using namespace std;
-using p = pair<int, int>;
-using ll = long long;
-const int MAX = 10e+6;
-const int INF = 0x66554433;
 
-vector<string> split(string input, char delimiter) {
-    vector<string> answer;
-    stringstream ss(input);
-    string temp;
-
-    while (getline(ss, temp, delimiter)) {
-        answer.push_back(temp);
+void calc(vector<int> &lis, int input) {
+    auto iter = lower_bound(lis.begin(), lis.end(), input);
+    if(iter == lis.end()){
+        lis.push_back(input);
+    }else{
+        *iter = input;
     }
-
-    return answer;
-}
-
-inline void Quick_IO() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
 }
 
 int main() {
-    Quick_IO();
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr), cout.tie(nullptr);
+
     int N;
     cin>>N;
-    for (int i = 0; i < N; ++i) {
-        int a;
-        cin>>a;
+    vector<int> lis;
+    for (int i = 0, input; i < N; ++i) {
+        cin >> input;
+        calc(lis, input);
     }
+
+    cout << N - lis.size() << '\n';
 
     return 0;
 }
+
+
